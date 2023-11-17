@@ -14,7 +14,7 @@ export class SocketService {
   constructor(
     // private http:HttpClient,
   ) {
-    this.socket = io(this.URL +'&from_type=monitor-app', { forceNew: true, reconnectionDelay: 2000, timeout: 100000 })
+     this.socket = io(this.URL, { forceNew: true, reconnectionDelay: 2000, timeout: 100000, query:{"from_type":"monitor-app"} })
      console.log('socket page')
     }
 //   socket = io('http://localhost:3000');
@@ -25,7 +25,7 @@ export class SocketService {
 //   }
 
   public receiveData = () => {
-    this.socket.on('usercount', (data) =>{
+    this.socket.on('userdetails', (data) =>{
       console.log(data)
       this.socketData$.next(data);
     });

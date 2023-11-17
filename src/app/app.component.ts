@@ -9,6 +9,7 @@ import { SocketService } from './socketService.service';
 export class AppComponent implements OnInit {
   title = 'APP-MONITOR';
   public userCount:any = 0;
+  public userDetails:any = [];
 
   constructor(private socketService: SocketService){}
 
@@ -16,7 +17,22 @@ export class AppComponent implements OnInit {
     // this.socketService.sendData({});
     this.socketService.receiveData();
     this.socketService.receiveData().subscribe((res:any)=>{
-      this.userCount = res?.user_count;
+       if(res.status == 'connect'){
+        const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
+           if(index == -1){
+             this.userDetails.push(res);
+           }
+      }else if(res.status== 'change'){
+        const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
+           if(index){
+             this.userDetails[index]=res;
+           }
+      }else if(res.status=='disconnect'){
+        const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
+        if(index){
+          this.userDetails.splice(index,1);
+        }
+      }
     });
   }
 }

@@ -15,21 +15,21 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // this.socketService.sendData({});
-    this.socketService.receiveData();
+    // this.socketService.receiveData();
     this.socketService.receiveData().subscribe((res:any)=>{
-       if(res.status == 'connect'){
+      if(res.status == 'connect'){
         const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
            if(index == -1){
              this.userDetails.push(res);
            }
       }else if(res.status== 'change'){
         const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
-           if(index){
+           if(index !== -1){
              this.userDetails[index]=res;
            }
-      }else if(res.status=='disconnect'){
+      }else if(res.status== 'disconnect'){
         const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
-        if(index){
+        if(index !== -1){
           this.userDetails.splice(index,1);
         }
       }

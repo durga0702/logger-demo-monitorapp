@@ -25,7 +25,11 @@ export class AppComponent implements OnInit {
       }else if(res.status== 'change'){
         const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
            if(index !== -1){
-             this.userDetails[index]=res;
+            if(res.country){
+              this.userDetails[index].user_country=res.country;
+            }else if(res.route){
+              this.userDetails[index].route=res.route;
+            }
            }
       }else if(res.status== 'disconnect'){
         const index = this.userDetails.findIndex((x:any)=>x.user_id===res.user_id);
